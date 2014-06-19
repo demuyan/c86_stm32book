@@ -446,5 +446,7 @@ g_pfnVectors:
    .weak      SPI4_IRQHandler                  
    .thumb_set SPI4_IRQHandler,Default_Handler 
 
+       
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
 

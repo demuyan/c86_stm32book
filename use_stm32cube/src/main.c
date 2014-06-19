@@ -77,10 +77,10 @@ int main(void)
        - Set NVIC Group Priority to 4
        - Global MSP (MCU Support Package) initialization
      */
-//  HAL_Init();
+  HAL_Init();
   
   /* Configure the system clock */
-//  SystemClock_Config();
+  SystemClock_Config();
   
   /* -1- Enable GPIOA Clock (to be able to program the configuration registers) */
   __GPIOA_CLK_ENABLE();
@@ -97,14 +97,9 @@ int main(void)
   while (1)
   {
     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-//    PUT32(GPIOA_BSRR,0x20);      // set LED pin high
-//      for(ra=0;ra<200000;ra++) continue;
-//      PUT32(GPIOA_BSRR,1<<(LED_PIN+16)); // set LED pin low
-
     
     /* Insert delay 100 ms */
-//    HAL_Delay(100);
-      for(int ra=0;ra<400000;ra++) continue;
+    HAL_Delay(100);
   }
 }
 
