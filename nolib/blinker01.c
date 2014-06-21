@@ -15,8 +15,8 @@ int notmain ( void )
   GPIOA->MODER |= GPIO_MODE_OUTPUT_PP << (PIN_5 * 2);
   
   // speed
-  GPIOA->OSPEEDR &= ~(GPIO_OSPEEDER_OSPEEDR0 << (PIN_5 * 2));
-  GPIOA->OSPEEDR |= GPIO_SPEED_FAST << (PIN_5 * 2);
+//  GPIOA->OSPEEDR &= ~(GPIO_OSPEEDER_OSPEEDR0 << (PIN_5 * 2));
+//  GPIOA->OSPEEDR |= GPIO_SPEED_FAST << (PIN_5 * 2);
 
   //pull-up
   GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPDR0 << (PIN_5 * 2));
