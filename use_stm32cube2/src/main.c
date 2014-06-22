@@ -124,144 +124,57 @@ void usart_snd_str(char *str) {
   }
 }
 
-#define HSE_TIMEOUT_VALUE          HSE_STARTUP_TIMEOUT
-#define HSI_TIMEOUT_VALUE          ((uint32_t)100)  /* 100 ms */
-#define LSI_TIMEOUT_VALUE          ((uint32_t)100)  /* 100 ms */
-#define PLL_TIMEOUT_VALUE          ((uint32_t)100)  /* 100 ms */
-#define CLOCKSWITCH_TIMEOUT_VALUE  ((uint32_t)5000) /* 5 s    */
-
-HAL_StatusTypeDef HAL_RCC_OscConfig2(RCC_OscInitTypeDef  *RCC_OscInitStruct)
+HAL_StatusTypeDef HAL_RCC_OscConfig2()
 {
 
   uint32_t timeout = 0;   
 
   /*----------------------------- HSI Configuration --------------------------*/
-//  if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_HSI) == RCC_OSCILLATORTYPE_HSI)
-//  {
     
-    /* When the HSI is used as system clock it will not disabled */
-    if((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_HSI) || ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_PLL) && ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSI)))
-    {
-      if((__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) != RESET) && (RCC_OscInitStruct->HSIState != RCC_HSI_ON))
-      {
-        return HAL_ERROR;
-      }
-    }
-    else
-    {
-      /* Check the HSI State */
-//      if((RCC_OscInitStruct->HSIState)!= RCC_HSI_OFF)
-//      {
-        /* Enable the Internal High Speed oscillator (HSI). */
-        __HAL_RCC_HSI_ENABLE();
+  /* When the HSI is used as system clock it will not disabled */
+  if((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_HSI) || ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_PLL) && ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSI)))
+  {
+  }
+  else
+  {
+    /* Enable the Internal High Speed oscillator (HSI). */
+    __HAL_RCC_HSI_ENABLE();
 
-        /* Get timeout */
-//        timeout = HAL_GetTick() + HSI_TIMEOUT_VALUE;
-
-        /* Wait till HSI is ready */  
-        while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET)
-        {
-//          if(HAL_GetTick() >= timeout)
-//          {
-//            return HAL_TIMEOUT;
-//          }      
-        } 
+    /* Wait till HSI is ready */  
+    while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET){} 
                 
-        /* Adjusts the Internal High Speed oscillator (HSI) calibration value.*/
-        __HAL_RCC_HSI_CALIBRATIONVALUE_ADJUST(RCC_OscInitStruct->HSICalibrationValue);
-//      }
-#if 0
-      else
-      {
-        /* Disable the Internal High Speed oscillator (HSI). */
-        __HAL_RCC_HSI_DISABLE();
-
-        /* Get timeout */
-//        timeout = HAL_GetTick() + HSI_TIMEOUT_VALUE;
-      
-        /* Wait till HSI is ready */  
-        while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) != RESET)
-        {
-//          if(HAL_GetTick() >= timeout)
-//          {
-//            return HAL_TIMEOUT;
-//          }
-        } 
-      }
-#endif
-    }
-//  }
+    /* Adjusts the Internal High Speed oscillator (HSI) calibration value.*/
+    __HAL_RCC_HSI_CALIBRATIONVALUE_ADJUST(16);
+  }
 
   /*-------------------------------- PLL Configuration -----------------------*/
   /* Check the parameters */
-//  if ((RCC_OscInitStruct->PLL.PLLState) != RCC_PLL_NONE)
-//  {
-    /* Check if the PLL is used as system clock or not */
-    if(__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL)
-    { 
-//      if((RCC_OscInitStruct->PLL.PLLState) == RCC_PLL_ON)
-//      {
-        
-        /* Disable the main PLL. */
-        __HAL_RCC_PLL_DISABLE();
+  /* Check if the PLL is used as system clock or not */
+  if(__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL)
+  { 
+    /* Disable the main PLL. */
+    __HAL_RCC_PLL_DISABLE();
 
-        /* Get timeout */
-//        timeout = HAL_GetTick() + PLL_TIMEOUT_VALUE;
-      
-        /* Wait till PLL is ready */  
-        while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) != RESET)
-        {
-//          if(HAL_GetTick() >= timeout)
-//          {
-//            return HAL_TIMEOUT;
-//          }      
-        }        
+    /* Wait till PLL is ready */  
+    while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) != RESET){}        
 
-        /* Configure the main PLL clock source, multiplication and division factors. */
-        __HAL_RCC_PLL_CONFIG(RCC_OscInitStruct->PLL.PLLSource,
-                             RCC_OscInitStruct->PLL.PLLM,
-                             RCC_OscInitStruct->PLL.PLLN,
-                             RCC_OscInitStruct->PLL.PLLP,
-                             RCC_OscInitStruct->PLL.PLLQ);
-        /* Enable the main PLL. */
-        __HAL_RCC_PLL_ENABLE();
+    /* Configure the main PLL clock source, multiplication and division factors. */
+    __HAL_RCC_PLL_CONFIG(RCC_PLLSOURCE_HSI,
+                         16,
+                         336,
+                         RCC_PLLP_DIV4,
+                         7);
+    /* Enable the main PLL. */
+    __HAL_RCC_PLL_ENABLE();
 
-        /* Get timeout */
-//        timeout = HAL_GetTick() + PLL_TIMEOUT_VALUE;
-      
-        /* Wait till PLL is ready */  
-        while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) == RESET)
-        {
-//          if(HAL_GetTick() >= timeout)
-//          {
-//            return HAL_TIMEOUT;
-//          }      
-        }
-//      }
-#if 0
-      else
-      {
-        /* Disable the main PLL. */
-        __HAL_RCC_PLL_DISABLE();
-        /* Get timeout */
-//        timeout = HAL_GetTick() + PLL_TIMEOUT_VALUE;
-      
-        /* Wait till PLL is ready */  
-        while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) != RESET)
-        {
-//          if(HAL_GetTick() >= timeout)
-//          {
-//            return HAL_TIMEOUT;
-//          }      
-        }
-      }
-#endif
-    }
-    else
-    {
-      return HAL_ERROR;
-    }
-//  }
+    /* Wait till PLL is ready */  
+    while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) == RESET){ }
+  }
+  else
+  {
+    return HAL_ERROR;
+  }
+
   return HAL_OK;
 }
 
@@ -363,7 +276,7 @@ static void SystemClock_Config(void)
   MODIFY_REG(PWR->CR, PWR_CR_VOS, ((uint32_t)0x00008000));
 
 
-
+/*
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
@@ -373,7 +286,8 @@ static void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLN = 336;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 7;
-  if(HAL_RCC_OscConfig2(&RCC_OscInitStruct) != HAL_OK)
+*/
+  if(HAL_RCC_OscConfig2() != HAL_OK)
   {
     Error_Handler();
   }
