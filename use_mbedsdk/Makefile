@@ -121,3 +121,6 @@ lst: $(PROJECT).lst
 
 size:
 	$(SIZE) $(PROJECT).elf
+
+flash:
+	st-flash write $(PROJECT).bin 0x8000000

@@ -5,7 +5,8 @@
 // 9600 bauds, 8-bit data, no parity
 //------------------------------------
 
-Serial pc(SERIAL_TX, SERIAL_RX);
+//Serial pc(SERIAL_TX, SERIAL_RX); // USART2
+Serial pc(PA_9, PA_10); // USART1
 
 DigitalOut myled(LED1);
 
