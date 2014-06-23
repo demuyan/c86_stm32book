@@ -178,6 +178,218 @@ HAL_StatusTypeDef HAL_RCC_OscConfig2()
   return HAL_OK;
 }
 
+HAL_StatusTypeDef HAL_RCC_ClockConfig2()
+{
+
+//  uint32_t timeout = 0;   
+ 
+  /* To correctly read data from FLASH memory, the number of wait states (LATENCY) 
+    must be correctly programmed according to the frequency of the CPU clock 
+    (HCLK) and the supply voltage of the device. */
+  
+  /* Increasing the CPU frequency */
+  if(FLASH_LATENCY_2 > (FLASH->ACR & FLASH_ACR_LATENCY))
+  {    
+    /* Program the new number of wait states to the LATENCY bits in the FLASH_ACR register */
+    __HAL_FLASH_SET_LATENCY(FLASH_LATENCY_2);
+    
+    /* Check that the new number of wait states is taken into account to access the Flash
+    memory by reading the FLASH_ACR register */
+    if((FLASH->ACR & FLASH_ACR_LATENCY) != FLASH_LATENCY_2)
+    {
+      return HAL_ERROR;
+    }
+
+    /*------------------------- SYSCLK Configuration ---------------------------*/ 
+//    if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_SYSCLK) == RCC_CLOCKTYPE_SYSCLK)
+//    {    
+      /* HSE is selected as System Clock Source */
+//      if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_HSE)
+//      {
+        /* Check the HSE ready flag */  
+//        if(__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) == RESET)
+//        {
+//          return HAL_ERROR;
+//        }
+//      }
+      /* PLL is selected as System Clock Source */
+//      else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_PLLCLK)
+//      {
+        /* Check the PLL ready flag */  
+        if(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) == RESET)
+        {
+          return HAL_ERROR;
+        }
+//      }
+      /* HSI is selected as System Clock Source */
+//      else
+      /* { */
+      /*   /\* Check the HSI ready flag *\/   */
+      /*   if(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET) */
+      /*   { */
+      /*     return HAL_ERROR; */
+      /*   } */
+//      }
+      MODIFY_REG(RCC->CFGR, RCC_CFGR_SW, RCC_SYSCLKSOURCE_PLLCLK);
+ 
+      /* Get timeout */
+//      timeout = HAL_GetTick() + CLOCKSWITCH_TIMEOUT_VALUE;
+      
+/*       if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_HSE) */
+/*       { */
+/*         while (__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_HSE) */
+/*         { */
+/* //          if(HAL_GetTick() >= timeout) */
+/* //          { */
+/* //            return HAL_TIMEOUT; */
+/* //          }  */
+/*         } */
+/*       } */
+/*       else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_PLLCLK) */
+/*       { */
+
+        while (__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL)
+        {
+//          if(HAL_GetTick() >= timeout)
+//          {
+//            return HAL_TIMEOUT;
+//          } 
+        }
+/*       } */
+/*       else */
+/*       { */
+/*         while(__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_HSI) */
+/*         { */
+/* //          if(HAL_GetTick() >= timeout) */
+/* //          { */
+/* //            return HAL_TIMEOUT; */
+/* //          } */
+/*         } */
+/*       } */
+        //}    
+  }
+  /* Decreasing the CPU frequency */
+  else
+  {
+    /*------------------------- SYSCLK Configuration ---------------------------*/ 
+
+//    if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_SYSCLK) == RCC_CLOCKTYPE_SYSCLK)
+//    {    
+      /* HSE is selected as System Clock Source */
+      /* if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_HSE) */
+      /* { */
+      /*   /\* Check the HSE ready flag *\/   */
+      /*   if(__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) == RESET) */
+      /*   { */
+      /*     return HAL_ERROR; */
+      /*   } */
+      /* } */
+      /* /\* PLL is selected as System Clock Source *\/ */
+      /* else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_PLLCLK) */
+      /* { */
+
+        /* Check the PLL ready flag */  
+        if(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) == RESET)
+        {
+          return HAL_ERROR;
+        }
+
+      /* } */
+      /* /\* HSI is selected as System Clock Source *\/ */
+      /* else */
+      /* { */
+      /*   /\* Check the HSI ready flag *\/   */
+      /*   if(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET) */
+      /*   { */
+      /*     return HAL_ERROR; */
+      /*   } */
+      /* } */
+      MODIFY_REG(RCC->CFGR, RCC_CFGR_SW, RCC_SYSCLKSOURCE_PLLCLK);
+      
+      /* Get timeout */
+//      timeout = HAL_GetTick() + CLOCKSWITCH_TIMEOUT_VALUE;
+      
+/*       if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_HSE) */
+/*       { */
+/*         while (__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_HSE) */
+/*         { */
+/* //          if(HAL_GetTick() >= timeout) */
+/* //          { */
+/* //            return HAL_TIMEOUT; */
+/* //          }  */
+/*         } */
+/*       } */
+/*       else if(RCC_ClkInitStruct->SYSCLKSource == RCC_SYSCLKSOURCE_PLLCLK) */
+/*       { */
+
+        while (__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL)
+        {
+//          if(HAL_GetTick() >= timeout)
+//          {
+//            return HAL_TIMEOUT;
+//          } 
+        }
+
+/*       } */
+/*       else */
+/*       { */
+/*         while(__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_HSI) */
+/*         { */
+/* //          if(HAL_GetTick() >= timeout) */
+/* //          { */
+/* //            return HAL_TIMEOUT; */
+/* //          }   */
+/*         } */
+/*       } */
+//    }
+
+    
+    /* Program the new number of wait states to the LATENCY bits in the FLASH_ACR register */
+    __HAL_FLASH_SET_LATENCY(FLASH_LATENCY_2);
+    
+    /* Check that the new number of wait states is taken into account to access the Flash
+    memory by reading the FLASH_ACR register */
+    if((FLASH->ACR & FLASH_ACR_LATENCY) != FLASH_LATENCY_2)
+    {
+      return HAL_ERROR;
+    }
+ }
+
+  
+  /*-------------------------- HCLK Configuration ----------------------------*/ 
+//  if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_HCLK) == RCC_CLOCKTYPE_HCLK)
+//  {
+    MODIFY_REG(RCC->CFGR, RCC_CFGR_HPRE, RCC_SYSCLK_DIV1);
+//  }
+  
+  /*-------------------------- PCLK1 Configuration ---------------------------*/ 
+  /* if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK1) */
+  /* { */
+//    assert_param(IS_RCC_PCLK(RCC_ClkInitStruct->APB1CLKDivider));
+    MODIFY_REG(RCC->CFGR, RCC_CFGR_PPRE1, RCC_HCLK_DIV2);
+//  }
+  
+  /*-------------------------- PCLK2 Configuration ---------------------------*/ 
+  /* if(((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK2) == RCC_CLOCKTYPE_PCLK2) */
+  /* { */
+//    assert_param(IS_RCC_PCLK(RCC_ClkInitStruct->APB2CLKDivider));
+    MODIFY_REG(RCC->CFGR, RCC_CFGR_PPRE2, ((RCC_HCLK_DIV1) << 3));
+//  }
+
+  /* Setup SysTick Timer for 1 msec interrupts.
+     ------------------------------------------
+    The SysTick_Config() function is a CMSIS function which configure:
+       - The SysTick Reload register with value passed as function parameter.
+       - Configure the SysTick IRQ priority to the lowest value (0x0F).
+       - Reset the SysTick Counter register.
+       - Configure the SysTick Counter clock source to be Core Clock Source (HCLK).
+       - Enable the SysTick Interrupt.
+       - Start the SysTick Counter.*/
+  SysTick_Config(HAL_RCC_GetHCLKFreq() / 1000);
+  
+  return HAL_OK;
+}
+
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -295,12 +507,14 @@ static void SystemClock_Config(void)
   
   /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
      clocks dividers */
+/*
   RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;  
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;  
-  if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+*/
+  if(HAL_RCC_ClockConfig2() != HAL_OK)
   {
     Error_Handler();
   }
