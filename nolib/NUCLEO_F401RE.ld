@@ -71,7 +71,6 @@ SECTIONS
     __bss_end__ = _ebss;
   } >RAM
   
-
   /* User_heap_stack section, used to check that there is enough RAM left */
   ._user_heap_stack :
   {

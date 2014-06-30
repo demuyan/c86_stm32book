@@ -1,10 +1,8 @@
 GCC_BIN = 
-PROJECT = blinker01
-OBJECTS = vectors.o blinker01.o 
+PROJECT = hello
+OBJECTS = vectors.o hello.o rcc.o
 
 INCLUDE_PATHS = -I. 
-# LIBRARY_PATHS = -L./mbed/TARGET_NUCLEO_F401RE/TOOLCHAIN_GCC_ARM 
-# LIBRARIES = -lmbed 
 LINKER_SCRIPT = ./NUCLEO_F401RE.ld
 
 ############################################################################### 
@@ -19,11 +17,10 @@ SIZE 	= $(GCC_BIN)arm-none-eabi-size
 CPU = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=softfp
 CC_FLAGS = $(CPU) -Wall -Werror -O2 -c -g
 
-# CC_SYMBOLS = -DTARGET_NUCLEO_F401RE -DTARGET_M4 -DTARGET_STM -DTARGET_NUCLEO_F401RE -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -D__CORTEX_M4 -DARM_MATH_CM4 -D__FPU_PRESENT=1 -DMBED_BUILD_TIMESTAMP=1402409083.98 -D__MBED__=1 -DTARGET_FF_ARDUINO -DTARGET_FF_MORPHO
+CC_SYMBOLS = -DTARGET_NUCLEO_F401RE -DTARGET_M4 -DTARGET_STM -DTARGET_NUCLEO_F401RE -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -D__CORTEX_M4 -DARM_MATH_CM4 -D__FPU_PRESENT=1 -DTARGET_FF_ARDUINO -DTARGET_FF_MORPHO
 
 LD_FLAGS  = -mcpu=cortex-m4 -mthumb -nostdlib -nostartfiles -ffreestanding 
 LD_FLAGS += -Wl,-Map=$(PROJECT).map,--cref
-# LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
 
 ifeq ($(DEBUG), 1)
   CC_FLAGS += -DDEBUG -O0

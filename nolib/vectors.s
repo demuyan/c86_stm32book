@@ -18,7 +18,7 @@
 .word   hang        /* 12 Debug Monitor */
 .word   hang        /* 13 RESERVED */
 .word   hang        /* 14 PendSV */
-.word   hang        /* 15 SysTick */
+.word   SysTick_Handler   /* 15 SysTick */
 .word   hang        /* 16 External Interrupt(0) */
 .word   hang        /* 17 External Interrupt(1) */
 .word   hang        /* 18 External Interrupt(2) */
@@ -35,4 +35,8 @@ _start:
 .thumb_func
 hang:   b .
 
+   .weak      SysTick_Handler
+   .thumb_set SysTick_Handler, hang
+
+        
 .end
