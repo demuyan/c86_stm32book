@@ -37,6 +37,5 @@ hang:   b .
 
    .weak      SysTick_Handler
    .thumb_set SysTick_Handler, hang
-
         
 .end

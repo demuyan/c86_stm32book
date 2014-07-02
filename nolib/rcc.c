@@ -28,7 +28,7 @@ static inline uint32_t SysTick_Config2(uint32_t ticks)
   return (0);                                                  /* Function successful */
 }
 
-void HAL_Delay2(__IO uint32_t Delay)
+void Delay(__IO uint32_t Delay)
 {
   uint32_t timingdelay;
   
@@ -45,7 +45,7 @@ void SysTick_Handler(void)
   uwtick++;
 }
 
-uint32_t HAL_RCC_OscConfig2()
+uint32_t HAL_RCC_OscConfig()
 {
 
 //  uint32_t timeout = 0;   
@@ -99,7 +99,7 @@ uint32_t HAL_RCC_OscConfig2()
   return HAL_OK;
 }
 
-uint32_t HAL_RCC_ClockConfig2()
+uint32_t HAL_RCC_ClockConfig()
 {
 
 //  uint32_t timeout = 0;   

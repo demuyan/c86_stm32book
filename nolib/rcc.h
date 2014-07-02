@@ -1069,9 +1069,9 @@ __attribute__( ( always_inline ) ) static inline uint32_t __RBIT(uint32_t value)
 #define __HAL_FLASH_SET_LATENCY(__LATENCY__) (*(__IO uint8_t *)ACR_BYTE0_ADDRESS = (uint8_t)(__LATENCY__))
 
 
-void HAL_Delay2(__IO uint32_t Delay);
-uint32_t HAL_RCC_OscConfig2();
-uint32_t HAL_RCC_ClockConfig2();
+void Delay(__IO uint32_t Delay);
+uint32_t HAL_RCC_OscConfig();
+uint32_t HAL_RCC_ClockConfig();
 
 
 
